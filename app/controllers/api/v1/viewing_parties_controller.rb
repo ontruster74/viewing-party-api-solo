@@ -1,19 +1,24 @@
-class ViewingPartiesController < ApplicationController
+class Api::V1::ViewingPartiesController < ApplicationController
   def create
-    movie = Movie.find(params[:movie_id])
-    user_ids = params[:user_ids]
-
-    viewing_party = ViewingParty.new(
-      name: params[:name],
-      start_time: params[:start_time],
-      end_time: params[:end_time],
-      movie_id: movie.id,
-    )
-
-    user_ids.each do |user_id|
-      viewing_party.users << User.find(user_id)
+    viewing_party = ViewingParty.new(viewing_party_params)
+    if viewing_party.save
+      render json: ViewingPartySerializer.serialize(viewing_party), status: :created
+    else
+      render json: ErrorSerializer.format_error(ErrorMessage.new(user.errors.full_messages.to_sentence, 400)), status: :bad_request
     end
+  end
 
-    render json: viewing_party, status: :created
+  def update
+    viewing_party = ViewingParty.find(params[:id])
+
+    new_invitee = params[:invitees_user_id].to_i
+
+    viewing_party.add_invitee(new_invitee)
+
+    render json:ViewingPartySerializer.serialize(viewing_party), status: :ok
+  end
+
+  def viewing_party_params
+    params.permit(:id, :invitees_user_id, :name, :start_time, :end_time, :movie_id, :movie_title, invitees: [])
   end
 end

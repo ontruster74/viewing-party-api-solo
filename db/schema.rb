@@ -33,7 +33,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_29_041211) do
     t.json "invitees", default: []
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["movie_id"], name: "index_viewing_parties_on_movie_id"
   end
 
   create_table "viewing_parties_users", id: false, force: :cascade do |t|

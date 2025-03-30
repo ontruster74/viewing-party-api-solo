@@ -20,4 +20,10 @@ class MovieGateway
     parsed_response = JSON.parse(response.body)
     movies = parsed_response['results']&.first(20)
   end
+
+  def self.movie_find(id)
+    response = conn.get("/3/find/#{id}") 
+    parsed_response = JSON.parse(response.body)
+    movie = parsed_response['results']
+  end
 end
