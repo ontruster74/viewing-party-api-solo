@@ -87,4 +87,50 @@ RSpec.describe "Users API", type: :request do
       expect(json[:data][0][:attributes]).to_not have_key(:api_key)
     end
   end
+
+  describe "GET /api/v1/users/:id" do
+    let!(:user) { User.create(name: "Tom", username: "myspace_creator", password: "test123") }
+    let!(:second_user) { User.create(name: "Oprah", username: "oprah", password: "abcqwerty") }
+    let!(:third_user) { User.create!(name: "Beyonce", username: "sasha_fierce", password: "blueivy") } 
+
+    let!(:hosted_party) do
+      ViewingParty.create(
+        name: "Movie Night",
+        start_time: Time.now + 1.day,
+        end_time: Time.now + 1.day + 2.hours,
+        movie_id: 550,
+        movie_title: "Fight Club",
+        host_id: user.id,
+        invitees: [third_user.id]
+      )
+    end
+
+    let!(:invited_party) do
+      ViewingParty.create(
+        name: "Action Marathon",
+        start_time: Time.now + 2.days,
+        end_time: Time.now + 2.days + 3.hours,
+        movie_id: 500,
+        movie_title: "Resovoir Dogs",
+        host_id: second_user.id,
+        invitees: [user.id, third_user.id]
+      )
+    end
+
+    it "Get a user's profile based on id" do
+      get "/api/v1/users/#{user.id}"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json[:id]).to eq(user.id)
+      expect(json[:name]).to eq(user.name)
+
+      expect(json[:hosted_parties].size).to eq(1)
+      expect(json[:hosted_parties].first[:id]).to eq(hosted_party.id)
+
+      expect(json[:invited_parties].size).to eq(1)
+      expect(json[:invited_parties].first[:id]).to eq(invited_party.id)
+    end
+  end
 end
