@@ -60,7 +60,7 @@ RSpec.describe "Movies API", type: :request do
         release_date: "1999-10-15",
         vote_average: 8.8,
         runtime: 139,
-        genres: [{ id: 18, name: "Drama" }],
+        genres: [{ name: "Drama" }],
         summary: "If you don't know this movie, I can't help you.",
         credits: {
           cast: [
@@ -70,8 +70,8 @@ RSpec.describe "Movies API", type: :request do
         },
         reviews: {
           results: [
-            { author: "John Doe", content: "Amazing movie!" },
-            { author: "Jane Smith", content: "A masterpiece." }
+            { author: "John Doe", review: "Amazing movie!" },
+            { author: "Jane Smith", review: "A masterpiece." }
           ]
         }
       }.to_json
@@ -94,7 +94,7 @@ RSpec.describe "Movies API", type: :request do
       expect(json_response["title"]).to eq("Fight Club")
       expect(json_response["release_date"]).to eq("1999-10-15")
       expect(json_response["vote_average"]).to eq(8.8)
-      expect(json_response["runtime"]).to eq(139)
+      expect(json_response["runtime"]).to eq("2 hours 19 minutes")
       expect(json_response["genres"].first["name"]).to eq("Drama")
       expect(json_response["summary"]).to eq("If you don't know this movie, I can't help you.")
 
@@ -104,7 +104,7 @@ RSpec.describe "Movies API", type: :request do
 
       expect(json_response["reviews"]).to eq(2)
       expect(json_response["reviews"].first["author"]).to eq("John Doe")
-      expect(json_response["reviews"].first["content"]).to eq("Amazing movie!")
+      expect(json_response["reviews"].first["review"]).to eq("Amazing movie!")
     end
   end
 end
