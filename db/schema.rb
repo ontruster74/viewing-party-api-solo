@@ -31,6 +31,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_03_29_041211) do
     t.integer "movie_id"
     t.string "movie_title"
     t.json "invitees", default: []
+    t.integer "host_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

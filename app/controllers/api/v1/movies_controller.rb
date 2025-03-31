@@ -7,4 +7,12 @@ class Api::V1::MoviesController < ApplicationController
     end
     render json: MovieSerializer.serialize(movie_list)
   end
+
+  def show
+    movie_json = MovieGateway.movie_find(params[:id])
+
+    movie = Movie.new(movie_json)
+
+    render json: MovieSerializer.serialize_details(movie)
+  end
 end

@@ -7,6 +7,7 @@ class CreateViewingParties < ActiveRecord::Migration[7.1]
       t.integer :movie_id
       t.string :movie_title
       t.json :invitees, default: []
+      t.integer :host_id
 
       t.timestamps
     end

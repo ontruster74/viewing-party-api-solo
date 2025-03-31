@@ -19,6 +19,6 @@ class Api::V1::ViewingPartiesController < ApplicationController
   end
 
   def viewing_party_params
-    params.permit(:id, :invitees_user_id, :name, :start_time, :end_time, :movie_id, :movie_title, invitees: [])
+    params.permit(:id, :invitees_user_id, :name, :start_time, :end_time, :movie_id, :movie_title, :host_id, invitees: [])
   end
 end

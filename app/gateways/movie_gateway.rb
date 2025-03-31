@@ -22,8 +22,7 @@ class MovieGateway
   end
 
   def self.movie_find(id)
-    response = conn.get("/3/find/#{id}") 
-    parsed_response = JSON.parse(response.body)
-    movie = parsed_response['results']
+    response = conn.get("/3/movie/#{id}", append_to_response: 'credits,reviews')
+    parsed_response = JSON.parse(response.body, symbolize_names: true)
   end
 end
